@@ -24,7 +24,7 @@ namespace PersonnelManager.Business.Tests
         }
 
         [TestMethod]
-        public void DateEmbauchePosterieureA1920()
+        public void DateEmbaucheOuvrierPosterieureA1920()
         {
             var fauxDataEmploye = new Mock<IDataEmploye>();
 
@@ -35,7 +35,7 @@ namespace PersonnelManager.Business.Tests
             {
                 Nom = "Dupont",
                 Prenom = "Gérard",
-                DateEmbauche = new DateTime(1919, 12, 31),
+                DateEmbauche = new DateTime(1920, 12, 31),
                 TauxHoraire = 12
             };
 
@@ -46,6 +46,85 @@ namespace PersonnelManager.Business.Tests
 
             Assert.AreEqual("La date d'embauche doit être > 1920", 
                 exception.Message);
+        }
+
+        [TestMethod]
+        public void DateEmbaucheCadrePosterieureA1920()
+        {
+            var fauxDataEmploye = new Mock<IDataEmploye>();
+
+            fauxDataEmploye.Setup(x => x.EnregistrerCadre(It.IsAny<Cadre>()));
+
+            var serviceEmploye = new ServiceEmploye(fauxDataEmploye.Object);
+            var cadre = new Cadre
+            {
+                Nom = "Dupont",
+                Prenom = "Gérard",
+                DateEmbauche = new DateTime(1920, 12, 31),
+                SalaireMensuel = 1500
+            };
+
+            var exception = Assert.ThrowsException<BusinessException>(() =>
+            {
+                serviceEmploye.EnregistrerCadre(cadre);
+            });
+
+            Assert.AreEqual("La date d'embauche doit être > 1920",
+                exception.Message);
+        }
+
+        [TestMethod]
+        public void DateEmbaucheCadreAnterieureAujourdhuiPlus3Mois()
+        {
+            Assert.Fail();
+        }
+
+        [TestMethod]
+        public void DateEmbaucheOuvrierAnterieureAujourdhuiPlus3Mois()
+        {
+            Assert.Fail();
+        }
+
+        [TestMethod]
+        public void SalaireCadrePositif()
+        {
+            Assert.Fail();
+        }
+
+        [TestMethod]
+        public void TauxHoraireOuvrierPositif()
+        {
+            Assert.Fail();
+        }
+
+        [TestMethod]
+        public void InterdireCaracteresSpeciauxDansNomEtPrenomCadre()
+        {
+            Assert.Fail();
+        }
+
+        [TestMethod]
+        public void InterdireCaracteresSpeciauxDansNomEtPrenomOuvrier()
+        {
+            Assert.Fail();
+        }
+
+        [TestMethod]
+        public void OuvrierEstNonNull()
+        {
+            var fauxDataEmploye = new Mock<IDataEmploye>();
+            var serviceEmploye = new ServiceEmploye(fauxDataEmploye.Object);
+            Assert.ThrowsException<InvalidOperationException>(
+                () => serviceEmploye.EnregistrerOuvrier(null));
+        }
+
+        [TestMethod]
+        public void CadreEstNonNull()
+        {
+            var fauxDataEmploye = new Mock<IDataEmploye>();
+            var serviceEmploye = new ServiceEmploye(fauxDataEmploye.Object);
+            Assert.ThrowsException<InvalidOperationException>(
+                () => serviceEmploye.EnregistrerCadre(null));
         }
     }
 }
