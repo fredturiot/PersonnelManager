@@ -62,6 +62,10 @@ namespace PersonnelManager.Business.Services
                 throw new BusinessException("Le Nom et Prenom ne peuvent pas contenir de Caracteres Speciaux ou de chiffre");
             }
 
+            if (cadre.Nom.Length >50 || cadre.Prenom.Length>50 )
+            {
+                throw new BusinessException("Le Nom et Prenom ne peuvent pas contenir plus de 50 caracteres");
+            }
             this.dataEmploye.EnregistrerCadre(cadre);
         }
 
@@ -93,6 +97,11 @@ namespace PersonnelManager.Business.Services
             if (badCharCheckNom > 0 || badCharCheckPrenom > 0)
             {
                 throw new BusinessException("Le Nom et Prenom ne peuvent pas contenir de Caracteres Speciaux ou de chiffre");
+            }
+
+            if (ouvrier.Nom.Length > 50 || ouvrier.Prenom.Length > 50)
+            {
+                throw new BusinessException("Le Nom et Prenom ne peuvent pas contenir plus de 50 caracteres");
             }
 
             this.dataEmploye.EnregistrerOuvrier(ouvrier);
